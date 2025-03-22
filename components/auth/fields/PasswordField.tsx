@@ -12,9 +12,14 @@ import PasswordRequirements from './PasswordRequirements';
 interface PasswordFieldProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
+  tooltip: boolean;
 }
 
-const PasswordField = <T extends FieldValues>({ control, name }: PasswordFieldProps<T>) => {
+const PasswordField = <T extends FieldValues>({
+  control,
+  name,
+  tooltip,
+}: PasswordFieldProps<T>) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -23,19 +28,23 @@ const PasswordField = <T extends FieldValues>({ control, name }: PasswordFieldPr
       name={name}
       render={({ field }) => (
         <FormItem>
-          <div className="flex items-center justify-between">
-            <FormLabel>Password</FormLabel>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="h-4 w-4 text-gray-500 hover:text-gray-600" />
-                </TooltipTrigger>
-                <TooltipContent className="py-2">
-                  <PasswordRequirements password={field.value} />
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+          {!tooltip && <FormLabel>Password</FormLabel>}
+          {tooltip && (
+            <div className="flex items-center justify-between">
+              <FormLabel>Password</FormLabel>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info className="h-4 w-4 text-gray-500 hover:text-gray-600" />
+                  </TooltipTrigger>
+                  <TooltipContent className="py-2">
+                    <PasswordRequirements password={field.value} />
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          )}
+
           <FormControl>
             <div className="relative">
               <Input

@@ -95,7 +95,7 @@ export function SignupForm() {
           type="email"
           placeholder="johndoe@example.com"
         />
-        <PasswordField control={control} name="password" />
+        <PasswordField control={control} name="password" tooltip={true} />
         <TermsAgreement control={control} name="isAgreePolicy" />
         <Button
           size="lg"
