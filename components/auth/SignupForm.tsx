@@ -4,7 +4,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TriangleAlert } from 'lucide-react';
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 // Components
@@ -17,6 +16,7 @@ import NameFields from './fields/NameFields';
 import PasswordField from './fields/PasswordField';
 import TermsAgreement from './fields/TermsAgreement';
 import InputField from './fields/InputField';
+import { useAuthStore } from '@/lib/store/authStore';
 
 // Form Types
 type SignupFormData = {
@@ -28,7 +28,7 @@ type SignupFormData = {
 };
 
 export function SignupForm() {
-  const router = useRouter();
+  const { setVerificationStatus } = useAuthStore();
   const [message, setMessage] = useState('');
   const [error, setError] = useState(false);
 
@@ -68,7 +68,8 @@ export function SignupForm() {
         description: 'Your account has been created successfully.',
         duration: 5000,
       });
-      router.push("/login");
+
+      setVerificationStatus(result.data?.email ?? "", true);
 
       return;
     } else {

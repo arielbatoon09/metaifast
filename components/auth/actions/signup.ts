@@ -1,10 +1,10 @@
 'use server';
 
 // Dependencies
+import { eq } from 'drizzle-orm';
 import { createClient } from '@/lib/supabase/server';
 import { db } from '@/lib/db/db';
 import { usersTable } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
 import { signupSchema } from '@/lib/validations/authSchema';
 import { createResponse } from '@/lib/utils/response';
 
@@ -78,7 +78,7 @@ export async function UserSignup(currentState: { message: string }, formData: Fo
     });
 
     return createResponse(200, {
-      data: null,
+      data: user,
       message: "Created successfully."
     });
   } catch (error) {

@@ -1,12 +1,38 @@
+"use client"
+
 import Link from 'next/link';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { SignupForm } from '@/components/auth/SignupForm';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { useAuthStore } from '@/lib/store/authStore';
 
 type AuthMode = 'login' | 'signup';
 
 export function Authentication({ auth }: { auth: AuthMode }) {
+  const { isVerified, email } = useAuthStore();
+
+  if (isVerified) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="w-full max-w-lg text-center flex flex-col items-center">
+          <Mail className='w-14 h-14 text-gray-700' />
+          <h2 className="text-4xl font-bold">Check your email</h2>
+          <p className="mt-5 text-gray-600">
+            We{"'"}ve sent you a confirmation link to <strong>{ email }</strong>. <br />
+            Please check your email and click the link to activate your account.
+          </p>
+          <Link href="/login">
+            <Button variant="outline" size="lg" className="mt-7 w-full">
+              Return to Login
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <section className="flex min-h-screen">
       {/* Authentication Form */}
