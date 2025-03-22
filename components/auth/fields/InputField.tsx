@@ -18,7 +18,7 @@ const InputField = <T extends FieldValues>({ control, name, label, type = 'text'
       <FormItem>
         <FormLabel>{label}</FormLabel>
         <FormControl>
-          <Input required type={type} placeholder={placeholder} {...field} />
+          <Input type={type} placeholder={placeholder} {...field} />
         </FormControl>
       </FormItem>
     )}

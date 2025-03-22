@@ -3,9 +3,6 @@
 // Dependencies
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { signupSchema } from '@/lib/validations/authSchema';
 import { TriangleAlert } from 'lucide-react';
 
 // Components
@@ -13,31 +10,25 @@ import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 
 // Form Actions
-import { UserSignup } from './actions';
+import { UserSignup } from './actions/signup';
 import NameFields from './fields/NameFields';
 import PasswordField from './fields/PasswordField';
 import TermsAgreement from './fields/TermsAgreement';
 import InputField from './fields/InputField';
 
+// Form Types
+type SignupFormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  isAgreePolicy: boolean;
+};
+
 export function SignupForm() {
   const [message, setMessage] = useState('');
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    // Debug Formdata
-    // for (const [key, value] of formData.entries()) {
-    //   console.log(`${key}: ${value}`);
-    // }
-
-    const result = await UserSignup({
-      message: ''
-    }, formData);
-    setMessage(result.message);
-  }
-
-  const form = useForm<z.infer<typeof signupSchema>>({
-    resolver: zodResolver(signupSchema),
+  const form = useForm({
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -48,6 +39,27 @@ export function SignupForm() {
     shouldUnregister: false,
   });
 
+  // state hook
+  const { handleSubmit, reset, control, formState } = form;
+  const { isSubmitting } = formState;
+
+  // form submission
+  async function onSubmit(formData: SignupFormData) {
+    setMessage('');
+
+    const formDataObj = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      formDataObj.append(key, String(value));
+    });
+
+    // Call Server Action
+    const result = await UserSignup({ message: '' }, formDataObj);
+    setMessage(result.message);
+    if (result.status === "success") {
+      reset();
+    }
+  }
+
   return (
     <Form {...form}>
       {message && (
@@ -57,14 +69,16 @@ export function SignupForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <NameFields control={form.control} />
-        <InputField control={form.control} name="email" label="Email address" type="email" placeholder="johndoe@example.com" />
-        <PasswordField control={form.control} name="password" />
-        <TermsAgreement control={form.control} name="isAgreePolicy" />
-        <Button size="lg" className="w-full" type="submit">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <NameFields control={control} />
+        <InputField control={control} name="email" label="Email address" type="email" placeholder="johndoe@example.com" />
+        <PasswordField control={control} name="password" />
+        <TermsAgreement control={control} name="isAgreePolicy" />
+        <Button size="lg" className="w-full flex items-center justify-center gap-2" type="submit" disabled={isSubmitting}>
+          {isSubmitting && <span className="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"></span>}
           Create account
         </Button>
+
       </form>
     </Form>
   );

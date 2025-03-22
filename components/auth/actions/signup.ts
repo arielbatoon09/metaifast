@@ -6,6 +6,7 @@ import { db } from '@/lib/db/db';
 import { usersTable } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { signupSchema } from '@/lib/validations/authSchema';
+import { createResponse } from '@/lib/utils/response';
 
 export async function UserSignup(currentState: { message: string }, formData: FormData) {
   const rawData = {
@@ -18,11 +19,13 @@ export async function UserSignup(currentState: { message: string }, formData: Fo
 
   const parsedData = signupSchema.safeParse(rawData);
   if (!parsedData.success) {
-    return { message: parsedData.error.errors[0]?.message || 'Invalid input' };
+    return createResponse(400, {
+      data: null,
+      message: parsedData?.error?.errors?.[0]?.message
+    });
   }
 
   const { firstName, lastName, email, password } = parsedData.data;
-
   const supabase = await createClient();
 
   try {
@@ -30,7 +33,10 @@ export async function UserSignup(currentState: { message: string }, formData: Fo
     const existingDBUser = await db.select().from(usersTable).where(eq(usersTable.email, email));
 
     if (existingDBUser.length > 0) {
-      return { message: 'An account with this email already exists.' };
+      return createResponse(409, {
+        data: null,
+        message: "An account with this email already exists."
+      });
     }
 
     // Signup  user in Supabase Auth
@@ -41,14 +47,24 @@ export async function UserSignup(currentState: { message: string }, formData: Fo
 
     if (signUpError) {
       if (signUpError.message.includes('already registered')) {
-        return { message: 'An account with this email already exists.' };
+        return createResponse(409, {
+          data: null,
+          message: "An account with this email already exists."
+        });
       }
-      return { message: signUpError.message };
+
+      return createResponse(400, {
+        data: null,
+        message: signUpError.message
+      });
     }
 
     const user = signUpData?.user;
     if (!user) {
-      return { message: 'Failed to create user.' };
+      return createResponse(400, {
+        data: null,
+        message: "Failed to create user."
+      });
     }
 
     // Insert user into the database
@@ -61,9 +77,15 @@ export async function UserSignup(currentState: { message: string }, formData: Fo
       updatedAt: new Date(),
     });
 
-    return { message: 'Created successfully!' };
+    return createResponse(200, {
+      data: null,
+      message: "Created successfully."
+    });
   } catch (error) {
     console.error('Error in signup:', error);
-    return { message: 'Failed to setup user account.' };
+    return createResponse(500, {
+      data: null,
+      message: `Network Error: ${error}`
+    });
   }
 }

@@ -20,7 +20,7 @@ const NameFields = <T extends FieldValues>({ control }: NameFieldsProps<T>) => {
             <FormItem>
               <FormLabel>{name === 'firstName' ? 'First Name' : 'Last Name'}</FormLabel>
               <FormControl>
-                <Input required placeholder={name === 'firstName' ? 'John' : 'Doe'} {...field} />
+                <Input placeholder={name === 'firstName' ? 'John' : 'Doe'} {...field} />
               </FormControl>
             </FormItem>
           )}
