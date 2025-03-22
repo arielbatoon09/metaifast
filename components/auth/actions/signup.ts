@@ -21,7 +21,7 @@ export async function UserSignup(currentState: { message: string }, formData: Fo
   if (!parsedData.success) {
     return createResponse(400, {
       data: null,
-      message: parsedData?.error?.errors?.[0]?.message
+      message: parsedData?.error?.errors?.[0]?.message,
     });
   }
 
@@ -35,7 +35,7 @@ export async function UserSignup(currentState: { message: string }, formData: Fo
     if (existingDBUser.length > 0) {
       return createResponse(409, {
         data: null,
-        message: "An account with this email already exists."
+        message: 'An account with this email already exists.',
       });
     }
 
@@ -49,13 +49,13 @@ export async function UserSignup(currentState: { message: string }, formData: Fo
       if (signUpError.message.includes('already registered')) {
         return createResponse(409, {
           data: null,
-          message: "An account with this email already exists."
+          message: 'An account with this email already exists.',
         });
       }
 
       return createResponse(400, {
         data: null,
-        message: signUpError.message
+        message: signUpError.message,
       });
     }
 
@@ -63,7 +63,7 @@ export async function UserSignup(currentState: { message: string }, formData: Fo
     if (!user) {
       return createResponse(400, {
         data: null,
-        message: "Failed to create user."
+        message: 'Failed to create user.',
       });
     }
 
@@ -79,13 +79,13 @@ export async function UserSignup(currentState: { message: string }, formData: Fo
 
     return createResponse(200, {
       data: user,
-      message: "Created successfully."
+      message: 'Created successfully.',
     });
   } catch (error) {
     console.error('Error in signup:', error);
     return createResponse(500, {
       data: null,
-      message: `Network Error: ${error}`
+      message: `Network Error: ${error}`,
     });
   }
 }

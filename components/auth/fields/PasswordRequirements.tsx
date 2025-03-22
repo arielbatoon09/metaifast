@@ -12,7 +12,10 @@ const PasswordRequirements = ({ password }: { password: string }) => {
   return (
     <ul>
       {criteria.map((criterion, index) => (
-        <li key={index} className={`flex items-center gap-1 ${criterion.check ? 'text-green-500' : 'text-gray-300'}`}>
+        <li
+          key={index}
+          className={`flex items-center gap-1 ${criterion.check ? 'text-green-500' : 'text-gray-300'}`}
+        >
           {criterion.check ? <Check className="h-4 w-4" /> : <X className="h-4 w-4" />}
           {criterion.text}
         </li>

@@ -1,8 +1,3 @@
 export function LoginForm() {
-
-  return (
-    <div>
-      LoginForm
-    </div>
-  )
+  return <div>LoginForm</div>;
 }

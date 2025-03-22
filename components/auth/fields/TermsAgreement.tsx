@@ -8,7 +8,6 @@ interface TermsAgreementProps<T extends FieldValues> {
   name: Path<T>;
 }
 
-
 const TermsAgreement = <T extends FieldValues>({ control, name }: TermsAgreementProps<T>) => (
   <FormField
     control={control}
@@ -23,7 +22,7 @@ const TermsAgreement = <T extends FieldValues>({ control, name }: TermsAgreement
         </FormControl>
 
         {/* Ensure the Checkbox is Sent */}
-        <input type="hidden" name={name} value={field.value ? "true" : "false"} />
+        <input type="hidden" name={name} value={field.value ? 'true' : 'false'} />
 
         <span className="block text-sm text-gray-700">
           I agree to the{' '}
@@ -38,7 +37,6 @@ const TermsAgreement = <T extends FieldValues>({ control, name }: TermsAgreement
       </FormItem>
     )}
   />
-
 );
 
 export default TermsAgreement;

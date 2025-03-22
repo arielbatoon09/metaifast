@@ -10,7 +10,13 @@ interface InputFieldProps<T extends FieldValues> {
   placeholder?: string;
 }
 
-const InputField = <T extends FieldValues>({ control, name, label, type = 'text', placeholder }: InputFieldProps<T>) => (
+const InputField = <T extends FieldValues>({
+  control,
+  name,
+  label,
+  type = 'text',
+  placeholder,
+}: InputFieldProps<T>) => (
   <FormField
     control={control}
     name={name}

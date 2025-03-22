@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 type AuthState = {
   user: string;
@@ -13,14 +13,14 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       email: null,
       isVerified: false,
-      user: "Ariel",
-      
+      user: 'Ariel',
+
       setVerificationStatus: (email: string | null, status: boolean) => {
         set({ email: email, isVerified: status });
       },
     }),
     {
-      name: "auth-storage",
+      name: 'auth-storage',
       partialize: (state) => ({ user: state.user }),
     }
   )

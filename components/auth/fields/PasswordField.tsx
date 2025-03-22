@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Control, FieldValues, Path } from "react-hook-form";
-import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { Info, Eye, EyeOff } from "lucide-react";
-import PasswordRequirements from "./PasswordRequirements";
+import { useState } from 'react';
+import { Control, FieldValues, Path } from 'react-hook-form';
+import { FormField, FormItem, FormLabel, FormControl } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import { Info, Eye, EyeOff } from 'lucide-react';
+import PasswordRequirements from './PasswordRequirements';
 
 interface PasswordFieldProps<T extends FieldValues> {
   control: Control<T>;
@@ -38,8 +38,9 @@ const PasswordField = <T extends FieldValues>({ control, name }: PasswordFieldPr
           </div>
           <FormControl>
             <div className="relative">
-              <Input required
-                type={showPassword ? "text" : "password"}
+              <Input
+                required
+                type={showPassword ? 'text' : 'password'}
                 placeholder="•••••••••"
                 {...field}
               />
@@ -47,7 +48,7 @@ const PasswordField = <T extends FieldValues>({ control, name }: PasswordFieldPr
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:bg-transparent"
+                className="absolute top-1/2 right-2 -translate-y-1/2 p-2 hover:bg-transparent"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (

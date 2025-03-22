@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TriangleAlert } from 'lucide-react';
-import { toast } from "sonner";
+import { toast } from 'sonner';
 
 // Components
 import { Form } from '@/components/ui/form';
@@ -60,8 +60,8 @@ export function SignupForm() {
     // Call Server Action
     const result = await UserSignup({ message: '' }, formDataObj);
     setMessage(result.message);
-    
-    if (result.status === "success") {
+
+    if (result.status === 'success') {
       reset();
 
       toast.success('Success', {
@@ -69,7 +69,7 @@ export function SignupForm() {
         duration: 5000,
       });
 
-      setVerificationStatus(result.data?.email ?? "", true);
+      setVerificationStatus(result.data?.email ?? '', true);
 
       return;
     } else {
@@ -88,14 +88,26 @@ export function SignupForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <NameFields control={control} />
-        <InputField control={control} name="email" label="Email address" type="email" placeholder="johndoe@example.com" />
+        <InputField
+          control={control}
+          name="email"
+          label="Email address"
+          type="email"
+          placeholder="johndoe@example.com"
+        />
         <PasswordField control={control} name="password" />
         <TermsAgreement control={control} name="isAgreePolicy" />
-        <Button size="lg" className="w-full flex items-center justify-center gap-2" type="submit" disabled={isSubmitting}>
-          {isSubmitting && <span className="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"></span>}
+        <Button
+          size="lg"
+          className="flex w-full items-center justify-center gap-2"
+          type="submit"
+          disabled={isSubmitting}
+        >
+          {isSubmitting && (
+            <span className="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+          )}
           Create account
         </Button>
-
       </form>
     </Form>
   );
