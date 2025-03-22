@@ -4,6 +4,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TriangleAlert } from 'lucide-react';
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 // Components
 import { Form } from '@/components/ui/form';
@@ -26,7 +28,9 @@ type SignupFormData = {
 };
 
 export function SignupForm() {
+  const router = useRouter();
   const [message, setMessage] = useState('');
+  const [error, setError] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -46,6 +50,7 @@ export function SignupForm() {
   // form submission
   async function onSubmit(formData: SignupFormData) {
     setMessage('');
+    setError(false);
 
     const formDataObj = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
@@ -55,14 +60,25 @@ export function SignupForm() {
     // Call Server Action
     const result = await UserSignup({ message: '' }, formDataObj);
     setMessage(result.message);
+    
     if (result.status === "success") {
       reset();
+
+      toast.success('Success', {
+        description: 'Your account has been created successfully.',
+        duration: 5000,
+      });
+      router.push("/login");
+
+      return;
+    } else {
+      return setError(true);
     }
   }
 
   return (
     <Form {...form}>
-      {message && (
+      {error && (
         <div className="mb-4 flex items-center gap-2 rounded-md bg-red-50 p-3.5 text-base text-red-700">
           <TriangleAlert className="h-4 w-4" />
           <span>{message}</span>
